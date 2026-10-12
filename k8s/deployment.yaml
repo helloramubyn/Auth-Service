@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: i27-auth
+  labels:
+    app: i27-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: i27-auth
+  template:
+    metadata:
+      labels:
+        app: i27-auth
+    spec:
+      containers:
+        - name: i27-auth-container
+          image: bynramu/i27helpdesk-auth:v1
+          ports:
+            - containerPort: 8081
+          envFrom: 
+          - secretRef:
+              name: i27-auth-dev  # Secrets containing senesitive information like database username, password, jwt token secret, etc. are stored in Kubernetes secrets and mounted as environment variables in the container 
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8081
+            initialDelaySeconds: 30   #  initial delay before the first probe is initiated when the container is started
+            periodSeconds: 20          # how often (in seconds) to perform the probe
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8081
+            initialDelaySeconds: 30   #  initial delay before the first probe is initiated when the container is started
+            periodSeconds: 30   
