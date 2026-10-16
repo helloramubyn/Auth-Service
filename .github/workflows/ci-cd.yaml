@@ -8,7 +8,7 @@ on:
        - 'src/**'
   workflow_dispatch:
 env:
-  DOCEKR_IMAGE_NAME: bynramu/helpdeskportal-auth
+  DOCKER_IMAGE_NAME: bynramu/helpdeskportal-auth
 jobs:
 #---- Job 1 - Build and Test ----#
   build-and-test:
@@ -47,7 +47,6 @@ jobs:
         with:
           context: .
           push: true
-          #tags: ${{ env.DOCKER_IMAGE_NAME }}:${{ steps.tag.outputs.value }}
           tags: |
                 ${{ env.DOCKER_IMAGE_NAME }}:${{ steps.tag.outputs.value }}
 
