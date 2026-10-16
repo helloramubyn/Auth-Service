@@ -10,7 +10,7 @@ on:
 
 jobs:
 #---- Job 1 - Build and Test ----#
-build-and-test:
+  build-and-test:
     - name: Build and Test
       runs-on: ubuntu-latest
       steps:
