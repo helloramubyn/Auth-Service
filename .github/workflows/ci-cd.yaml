@@ -1,0 +1,30 @@
+name: Auth-Service CI/CD
+on: 
+  push: 
+     branches: [main]
+     path:
+       - 'pom.xml'
+       - 'Dockerfile'
+       - 'src/**'
+  workflow_dispatch:
+
+jobs:
+#---- Job 1 - Build and Test ----#
+build-and-test:
+    - name: Build and Test
+      runs-on: ubuntu-latest
+      steps:
+       - name: Check out code
+         uses: actions/checkout@v4
+       - name: Set up Java
+         uses: actions/setup-java@v6
+         with:
+            java-version: '17'
+            distribution: 'temurin'
+    
+     
+#---- Job 2 - Sonar Scan----#
+#---- Job 3 - Docker - Build and Push  ----#
+#---- Job 4 - Deploy to Dev ----#
+#---- Job 5 - Deploy to Stage ----#
+#---- Job 6 - Deploy to Prod ----#
