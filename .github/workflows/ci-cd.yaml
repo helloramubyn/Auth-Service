@@ -20,7 +20,8 @@ jobs:
          uses: actions/setup-java@v6
          with:
             java-version: '17'
-            distribution: 'temurin'
+            distribution: temurin
+            cache: maven
     
      
 #---- Job 2 - Sonar Scan----#
