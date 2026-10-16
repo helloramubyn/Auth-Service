@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-and-test
     outputs:
-     image-tag = {{ steps.tag.outputs.value }}
+     image-tag: ${{ steps.tag.outputs.value }}
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -49,7 +49,7 @@ jobs:
           context: .
           push: true
           tags: |
-              {{ env.DOCKER_IMAGE_NAME }}:{{ steps.tag.outputs.value }}
+              ${{ env.DOCKER_IMAGE_NAME }}:${{ steps.tag.outputs.value }}
 
 #---- Job 4 - Deploy to Dev ----#
 #---- Job 5 - Deploy to Stage ----#
