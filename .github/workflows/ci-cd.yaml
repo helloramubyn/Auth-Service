@@ -70,6 +70,8 @@ jobs:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER}}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
           project_id: ${{env.GCP_PROJECT_ID}}
+      - name: Check Gcloud version
+        run: gcloud --version    
       
 
 #---- Job 5 - Deploy to Stage ----#
