@@ -9,6 +9,7 @@ on:
   workflow_dispatch:
 env:
   DOCKER_IMAGE_NAME: bynramu/helpdeskportal-auth
+  GCP_PROJECT_ID: project-end-to-end
 jobs:
 #---- Job 1 - Build and Test ----#
   build-and-test:
@@ -51,22 +52,24 @@ jobs:
                 ${{ env.DOCKER_IMAGE_NAME }}:${{ steps.tag.outputs.value }}
 
 #---- Job 4 - Deploy to Dev ----#
-# deploy-to-dev:
-#   name: Deploy to Dev environment
-#   runs-on: ubuntu-latest
-#   needs: docker-build-and-push
-#   outputs:
-#     image-tag:
-#   steps:
-#     - name: Check out code
-#       uses: actions/checkout@v4
-#     - name: Docker Image Tag
-#       id: tag
-#       run: echo "value=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
-#     - name: Docker Login
-#       uses: docker/login-action@v4    
-#     - name: Build and Push Image  
-#       uses: docker/build-push-action@v7
+    deploy-to-dev:
+    name: Deploy to Dev environment
+    runs-on: ubuntu-latest
+    needs: docker-build-and-push
+    environment:
+      name: development
+    permissions: 
+      contents: read
+      id-token: write # required for OIDC token google-github-actions/auth exchanged to gcp credentials
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Authenticate to GCP via OIDC
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER}}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          project_id: ${{env.GCP_PROJECT_ID}}
       
 
 #---- Job 5 - Deploy to Stage ----#
