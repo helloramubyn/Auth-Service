@@ -1,0 +1,100 @@
+=============================
+GCP OIDC SETUP
+=============================
+Project ID     : project-end-to-end
+Project Number : 621801796734
+GitHub Org     : helloramubyn
+GitHub Repo    : Auth-Service
+Service Account: help-auth-gh-sa@project-end-to-end.iam.gserviceaccount.com
+Pool ID        : help-auth-gh-pool
+Provider ID    : help-auth-gh-provider
+=============================
+
+Step 1: Enabling required GCP APIs...
+Operation "operations/acat.p2-621801796734-97672947-e7a3-4d39-9b14-c236675aaf4c" finished successfully.
+APIs enabled ✅
+
+Step 2: Creating Service Account...
+Created service account [help-auth-gh-sa].
+Service account email: help-auth-gh-sa@project-end-to-end.iam.gserviceaccount.com
+Waiting 15 seconds for IAM replication...
+Service Account verified ✅
+
+Step 3: Granting permissions to Service Account...
+Updated IAM policy for project [project-end-to-end].
+bindings:
+- members:
+  - serviceAccount:621801796734@cloudservices.gserviceaccount.com
+  role: roles/compute.instanceGroupManagerServiceAgent
+- members:
+  - serviceAccount:service-621801796734@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:service-621801796734@gcp-sa-gkenode.iam.gserviceaccount.com
+  role: roles/container.defaultNodeServiceAgent
+- members:
+  - serviceAccount:service-621801796734@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-621801796734@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:621801796734-compute@developer.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:service-621801796734@cloud-filer.iam.gserviceaccount.com
+  role: roles/file.serviceAgent
+- members:
+  - serviceAccount:service-621801796734@gcp-sa-networkconnectivity.iam.gserviceaccount.com
+  role: roles/networkconnectivity.serviceAgent
+- members:
+  - serviceAccount:help-auth-gh-sa@project-end-to-end.iam.gserviceaccount.com
+  - user:ramu.spoint9@gmail.com
+  role: roles/owner
+- members:
+  - serviceAccount:service-621801796734@gcp-sa-pubsub.iam.gserviceaccount.com
+  role: roles/pubsub.serviceAgent
+etag: BwZd_a9_UKg=
+version: 1
+Permissions granted ✅
+
+Step 4: Creating Workload Identity Pool...
+Created workload identity pool [help-auth-gh-pool].
+Workload Identity Pool verified ✅
+
+Step 5: Creating OIDC Provider for GitHub Actions...
+Created workload identity pool provider [help-auth-gh-provider].
+OIDC Provider verified ✅
+
+Step 6: Binding Service Account to GitHub repository...
+Updated IAM policy for serviceAccount [help-auth-gh-sa@project-end-to-end.iam.gserviceaccount.com].
+bindings:
+- members:
+  - principalSet://iam.googleapis.com/projects/621801796734/locations/global/workloadIdentityPools/help-auth-gh-pool/attribute.repository/helloramubyn/Auth-Service
+  role: roles/iam.workloadIdentityUser
+etag: BwZd_a_gLR4=
+version: 1
+Service Account binding complete ✅
+
+=============================
+SETUP COMPLETE
+=============================
+
+Add these as GitHub Secrets in your repo:
+  Repo → Settings → Secrets and variables → Actions → New secret
+
+GCP_SERVICE_ACCOUNT:
+  help-auth-gh-sa@project-end-to-end.iam.gserviceaccount.com
+
+GCP_WORKLOAD_IDENTITY_PROVIDER:
+  projects/621801796734/locations/global/workloadIdentityPools/help-auth-gh-pool/providers/help-auth-gh-provider
+
+=============================
+NEXT STEPS
+=============================
+1. Copy GCP_SERVICE_ACCOUNT value above
+2. Copy GCP_WORKLOAD_IDENTITY_PROVIDER value above
+3. Add both as GitHub Secrets in your repo
+4. Use google-github-actions/auth@v2 in your workflow
+=============================
+ramu_spoint9@cloudshell:~/101626 (project-end-to-end)$ 
