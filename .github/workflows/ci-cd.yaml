@@ -4,6 +4,8 @@ on:
 env:
   DOCKER_IMAGE_NAME: bynramu/helpdeskportal-auth
   GCP_PROJECT_ID: project-end-to-end
+  GKE_CLUSTER: helpdesk-cluster
+  GKE_ZONE: us-central1-a
 jobs:
 #---- Job 1 - Build and Test ----#
   build-and-test:
@@ -52,10 +54,8 @@ jobs:
     needs: docker-build-and-push
     env:
       name: dev
-      NAMESPACE: projecthelpdesk-${{ inputs.environment }}
-      SECRET_NAME: i27-auth-${{ inputs.environment }}
-      GKE_CLUSTER: helpdesk-cluster
-      GKE_ZONE: us-central1-a
+      NAMESPACE: projecthelpdesk-dev
+      SECRET_NAME: i27-auth-dev
     environment: 
       name: ${{ inputs.environment}}  
     permissions: 
