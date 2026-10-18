@@ -54,6 +54,8 @@ jobs:
       name: dev
       NAMESPACE: projecthelpdesk-${{ inputs.environment }}
       SECRET_NAME: i27-auth-${{ inputs.environment }}
+      GKE_CLUSTER: helpdesk-cluster
+      GKE_ZONE: us-central1-a
     environment: 
       name: ${{ inputs.environment}}  
     permissions: 
@@ -68,6 +70,11 @@ jobs:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER}}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
           project_id: ${{env.GCP_PROJECT_ID}}
+      - name: Get GKE Credentials
+        uses: 'google-github-actions/get-gke-credentials@v3'
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER}}
+          location: ${{ env.GKE_ZONE }}    
       - name: Nodes list
         run: |
           kubectl get nodes    
@@ -80,6 +87,9 @@ jobs:
         run: |
           kubectl apply -n ${{ env.NAMESPACE }} -f k8s/deployment.yaml
           kubectl apply -n ${{ env.NAMESPACE }} -f k8s/service.yaml  
+      - name: Verify Rollout 
+        run: |
+          kubectl rollout status deployment/i27-auth -n ${{ env.NAMESPACE }} --timeout=120s    
 
 
        
