@@ -80,7 +80,7 @@ jobs:
           kubectl get nodes    
       - name: Set the image tag
         run: | 
-          IMAGE="${{ env.DOCKER_IMAGE_NAME}}:${{ needs.docker-build-push.outputs.image_tag}}"
+          IMAGE="${{ env.DOCKER_IMAGE_NAME}}:${{ needs.docker-build-push.outputs.image-tag}}"
           sed -i "s|\${IMAGE}|${IMAGE}|g" k8s/deployment.yaml
           sed -i "s|\${SECRET_NAME}|${{ env.SECRET_NAME}}|g" k8s/deployment.yaml   
       - name: Deploy the manifests
