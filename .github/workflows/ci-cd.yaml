@@ -3,7 +3,7 @@ run-name: Deploy to ${{ inputs.environment }} | by ${{ github.actor }} | branch 
 on: 
  workflow_dispatch:
   inputs:
-   environments:
+   environment:
      description: "Environment to deploy"
      type: choice
      options:
@@ -66,9 +66,7 @@ jobs:
     env:
       name: dev
       NAMESPACE: projecthelpdesk-${{ inputs.environment }} 
-      SECRET_NAME: i27-auth-${{ inputs.environment }} 
-    environment: 
-      name: ${{ inputs.environment}}  
+      SECRET_NAME: i27-auth-${{ inputs.environment }}  
     permissions: 
       contents: read
       id-token: write # required for OIDC token google-github-actions/auth exchanged to gcp credentials
