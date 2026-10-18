@@ -1,5 +1,5 @@
 name: Auth-Service CI/CD
-run-name: Deploy to ${{ inputs.environment }} | by ${{ github.actor }} | branch ${{github.refname}}
+run-name: Deploy to ${{ inputs.environment }} | by ${{ github.actor }} | branch ${{github.ref_name}}
 on: 
  workflow_dispatch:
   inputs:
