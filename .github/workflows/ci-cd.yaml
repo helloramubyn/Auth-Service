@@ -54,7 +54,7 @@ jobs:
       name: dev
       NAMESPACE: projecthelpdesk-${{ inputs.environment }}
       SECRET_NAME: i27-auth-${{ inputs.environment }}
-      environment: 
+    environment: 
       name: ${{ inputs.environment}}  
     permissions: 
       contents: read
