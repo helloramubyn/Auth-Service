@@ -57,7 +57,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: docker-build-and-push
     environment:
-      name: development
+      name: dev
+      NAMESPACE: projecthelpdesk-${{ inputs.environment }}
+      SECRET_NAME: i27-auth-${{ inputs.environment }}
     permissions: 
       contents: read
       id-token: write # required for OIDC token google-github-actions/auth exchanged to gcp credentials
@@ -70,8 +72,21 @@ jobs:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER}}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
           project_id: ${{env.GCP_PROJECT_ID}}
-      - name: Check Gcloud version
-        run: gcloud --version    
+      - name: Nodes list
+        run: |
+          kubectl get nodes    
+      - name: Set the image tag
+        run: | 
+          IMAGE="${{ env.DOCKER_IMAGE_NAME}}:${{ needs.docker-build-push.outputs.image_tag}}"
+          sed -i "s|\${IMAGE}|${IMAGE}|g" k8s/deployment.yaml
+          sed -i "s|\${SECRET_NAME}|${{ env.SECRET_NAME}}|g" k8s/deployment.yaml   
+      - name: Deploy the manifests
+        run: |
+          kubectl apply -n ${{ env.NAMESPACE }} -f k8s/deployment.yaml
+          kubectl apply -n ${{ env.NAMESPACE }} -f k8s/service.yaml  
+             
+
+       
       
 
 #---- Job 5 - Deploy to Stage ----#

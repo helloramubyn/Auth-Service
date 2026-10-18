@@ -16,12 +16,12 @@ spec:
     spec:
       containers:
         - name: i27-auth-container
-          image: bynramu/i27helpdesk-auth:v1
+          image: ${IMAGE}
           ports:
             - containerPort: 8081
           envFrom: 
           - secretRef:
-              name: i27-auth-dev  # Secrets containing senesitive information like database username, password, jwt token secret, etc. are stored in Kubernetes secrets and mounted as environment variables in the container 
+              name: ${SECRET_NAME} # Secrets containing senesitive information like database username, password, jwt token secret, etc. are stored in Kubernetes secrets and mounted as environment variables in the container 
           readinessProbe:
             httpGet:
               path: /readyz
