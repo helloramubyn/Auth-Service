@@ -1,6 +1,16 @@
 name: Auth-Service CI/CD
 on: 
  workflow_dispatch:
+  inputs:
+   environments:
+     description: "Environment to deploy"
+     type: choice
+     options:
+          - dev
+          - test
+          - stage
+          - prod 
+     default: dev 
 env:
   DOCKER_IMAGE_NAME: bynramu/helpdeskportal-auth
   GCP_PROJECT_ID: project-end-to-end
